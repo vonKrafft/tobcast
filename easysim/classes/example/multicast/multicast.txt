@@ -1,0 +1,31 @@
+# PEERSIM EXAMPLE 1
+
+random.seed 1234567890
+simulation.cycles 20
+simulation.timeDiagram
+simulation.uniform true
+
+network.size 5
+ 
+init.0_rnd WireEntireNetwork
+init.0_rnd.protocol example
+init.0_rnd.k 2
+#init.0_rnd.undirected
+
+#init.1_neighbours example.Initializer
+#init.1_neighbours.param1 value1
+
+protocol.example example.multicast.Multicast
+protocol.example.latencyRange 2 # The latency will greater than 0, and lower than the value given
+#protocol.example.perMessageLatency
+#protocol.example.constantLatency # Is the latency constant for all messages?  If so, latency = 1
+protocol.example.maxMessagesToSend -1 # -1 : receive all the waiting messages
+protocol.example.maxMessagesToReceive -1 # -1 : send all the waiting messages
+
+
+control.1_observer example.multicast.PostObserver
+control.1_observer.protocol example
+control.1_observer.observe.nbReceivedMessages
+
+
+

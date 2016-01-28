@@ -1,0 +1,10 @@
+To run the examples, you need java 5 installed, and then type:
+
+java -cp "classes:jep-2.3.0.jar:djep-1.0.0.jar" easysim.Simulator src/example/multicast/multicast.txt
+
+
+The provided code includes an example of a configuration file
+that allows testing a set of configurations (here, different network
+sizes). To run it: 
+
+java -cp "classes:jep-2.3.0.jar:djep-1.0.0.jar" easysim.rangesim.RangeSimulator src/example/ring/ring.cfg
