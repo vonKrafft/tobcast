@@ -9,7 +9,7 @@ import easysim.core.Node;
  * 
  * @author Vivien Quema
  */
-public class Multicast extends Node<MulticastMessage>
+public class Broadcast extends Node<BroadcastMessage>
 {
 
   // ------------------------------------------------------------------------
@@ -26,7 +26,7 @@ public class Multicast extends Node<MulticastMessage>
 
   int nbReceivedMessages = 0;
 
-  public Multicast(String prefix) {
+  public Broadcast(String prefix) {
     super(prefix);
   }
 
