@@ -80,7 +80,7 @@ public class PostObserver implements Control {
         IncrementalStats nbReceivedMessagesStats = new IncrementalStats();
         
         for (int i = 0; i < Network.size(); i++) {
-            Multicast protocol = (Multicast) Network.get(i);
+            Broadcast protocol = (Broadcast) Network.get(i);
             nbReceivedMessagesStats.add(protocol.nbReceivedMessages);
         }
         

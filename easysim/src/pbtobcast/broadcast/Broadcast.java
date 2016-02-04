@@ -9,7 +9,7 @@ import easysim.core.Node;
  * 
  * @author Vivien Quema
  */
-public class Multicast extends Node<MulticastMessage>
+public class Broadcast extends Node<BroadcastMessage>
 {
 
   // ------------------------------------------------------------------------
@@ -26,17 +26,17 @@ public class Multicast extends Node<MulticastMessage>
 
   int nbReceivedMessages = 0;
 
-  public Multicast(String prefix) {
+  public Broadcast(String prefix) {
     super(prefix);
   }
 
   public void cycleHandler() {
     // Node 0 injects a new message in the system
     if (id == 0 && (Simulator.getCycle() % 4 == 0)) {
-      send(new MulticastMessage(), neighbors);
+      send(new BroadcastMessage(), neighbors);
     }
     // Handle incoming messages
-    MulticastMessage m;
+    BroadcastMessage m;
     while ((m = receive()) != null) {
       nbReceivedMessages++;
       if (m.hops == 0) {
