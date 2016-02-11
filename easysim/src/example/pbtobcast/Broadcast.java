@@ -1,5 +1,5 @@
 
-package pbtobcast.broadcast;
+package example.pbtobcast;
 
 import easysim.Simulator;
 import easysim.core.Node;
