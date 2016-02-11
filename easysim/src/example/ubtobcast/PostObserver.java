@@ -1,5 +1,5 @@
 
-package pbtobcast.broadcast;
+package example.ubtobcast;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

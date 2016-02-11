@@ -1,4 +1,4 @@
-package pbtobcast.broadcast;
+package example.ubtobcast;
 
 import easysim.core.Message;
 
