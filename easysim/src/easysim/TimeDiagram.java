@@ -1,5 +1,6 @@
 package easysim;
 
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -87,12 +88,14 @@ public class TimeDiagram extends JApplet {
             // arrowDef[3] = receivingRound
             // arrowDef[4] = id
             // arrowDef[5] = color
+            // arrowDef[6] = sequence number
             int x1 = LEFT_MARGIN + arrowDef[2] * INTER_CYCLES_SPACE;
             int x2 = LEFT_MARGIN + arrowDef[3] * INTER_CYCLES_SPACE;
             int y1 = TOP_MARGIN + arrowDef[0] * INTER_PROCESSES_SPACE;
             int y2 = TOP_MARGIN + arrowDef[1] * INTER_PROCESSES_SPACE;
-            g2.setColor(Color.black);
-            g2.drawString("m" + arrowDef[4], x1 + 3, y1 - 3);
+            //g2.setColor(Color.black);
+            g2.setColor(colors[arrowDef[5]]);
+            g2.drawString("m" + arrowDef[4] + "s" + (arrowDef[6] == -1 ? "ND" : arrowDef[6]), x1 + 3, y1 - 3);
             g2.setColor(colors[arrowDef[5]]);
             if (arrowDef[0] == arrowDef[1]) {
                 // g2.drawArc(x1 /* +(INTER_CYCLES_SPACE / 2) */, y1
@@ -115,6 +118,7 @@ public class TimeDiagram extends JApplet {
             // arrowDef[3] = receivingRound
             // arrowDef[4] = id
             // arrowDef[5] = color
+            // arrowDef[6] = sequence number
             int x1 = LEFT_MARGIN + arrowDef[2] * INTER_CYCLES_SPACE - 4;
             int x2 = x1 + 8;
             int y1 = TOP_MARGIN + arrowDef[0] * INTER_PROCESSES_SPACE - 4;
@@ -138,18 +142,19 @@ public class TimeDiagram extends JApplet {
                 // arrowDef[3] = receivingRound
                 // arrowDef[4] = id
                 // arrowDef[5] = color
+                // arrowDef[6] = sequence number
 
                 //System.out.println(arrowDef[4]);
                 //int x1 = LEFT_MARGIN + arrowDef[2] * INTER_CYCLES_SPACE + 10 + networkSize*(arrowDef[3] - arrowDef[2]) * INTER_CYCLES_SPACE ;
                 int x1 = LEFT_MARGIN + arrowDef[2] * INTER_CYCLES_SPACE + 10 + (arrowDef[3] - arrowDef[2]) * INTER_CYCLES_SPACE ;
                 //System.out.println(arrowDef[3] - arrowDef[2]);
                 int x2 = x1 + 7;
-                int y1 = TOP_MARGIN + arrowDef[0] * INTER_PROCESSES_SPACE - 4;
+                int y1 = TOP_MARGIN + arrowDef[1] * INTER_PROCESSES_SPACE - 4;
                 int y2 = y1 + 8;
 
 
                 g2.setColor(colors[arrowDef[5]]);
-                g2.drawString("DELIVER m" + arrowDef[4], x1 -2 , y1 + 24);    
+                g2.drawString("DLV m" + arrowDef[4] + "s" + (arrowDef[6] == -1 ? "ND" : arrowDef[6]), x1 -2 , y1 + 24);    
 
                 g2.drawLine(x1, y1, x2, y2);
                 g2.drawLine(x2, y2, x1+20, y2-25);
@@ -172,27 +177,29 @@ public class TimeDiagram extends JApplet {
         activated = true;
     }
 
+    
     public static void addArrow(int nodeFrom, int nodeTo, int sendingRound,
-            int receivingRound, int id, int color) {
+            int receivingRound, int id, int color, int seqNb) {
         if (activated) {
             arrows.add(new int[]{nodeFrom, nodeTo, sendingRound, receivingRound, id,
-                    color});
+                    color, seqNb});
         }
     }
 
     public static void addCircle(int nodeFrom, int nodeTo, int sendingRound,
-            int receivingRound, int id, int color) {
+            int receivingRound, int id, int color, int seqNb) {
         if (activated) {
             circles.add(new int[]{nodeFrom, nodeTo, sendingRound, receivingRound, id,
-                    color});
+                    color, seqNb});
         }
     }  
 
+    
     public static void addAck(int nodeFrom, int nodeTo, int sendingRound,
-            int receivingRound, int id, int color) {
+            int receivingRound, int id, int color, int seqNb) {
         if (activated) {
             acks.add(new int[]{nodeFrom, nodeTo, sendingRound, receivingRound, id,
-                    color});
+                    color, seqNb});
         }
     } 
 

@@ -195,24 +195,24 @@ public abstract class Node<T extends Message> {
                     iter.remove();
                     if ( !message.getIsEmpty() ) {
                         TimeDiagram.addArrow(message.sendingNode, id, message.sendingCycle,          
-                                Simulator.getCycle(), message.id, message.color);
+                                Simulator.getCycle(), message.id, message.color, message.getSeqNb());
 
                         TimeDiagram.addCircle(message.sendingNode, id, message.sendingCycle,
-                                Simulator.getCycle(), message.id, 1);
+                                Simulator.getCycle(), message.id, 1, message.getSeqNb());
 
-                        message.setAckedBy(id);
+                        /*message.setAckedBy(id);
 
                         boolean[] ackedBy = message.getAckedBy();
                         if (ackedByAll(ackedBy)) {
                             TimeDiagram.addAck(message.sendingNode, id, message.sendingCycle,
-                                    Simulator.getCycle(), message.id, message.color);
+                                    Simulator.getCycle(), message.id, message.color, seqNb);
                         }
-
+                        */
                         nbReceivedMessagesInCurrentRound++;        
                     }
                     else {
                         TimeDiagram.addCircle(message.sendingNode, id, message.sendingCycle,
-                                Simulator.getCycle(), message.id, message.color);
+                                Simulator.getCycle(), message.id, message.color, message.getSeqNb());
 
                     }
                     return message;

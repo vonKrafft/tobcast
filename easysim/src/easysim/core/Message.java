@@ -20,6 +20,10 @@ public class Message implements Cloneable
 		return ackedBy;
 	}
 	
+        public int getSeqNb(){
+            return -1;
+        }
+        
 	public boolean getIsEmpty() {
 		return isEmpty;		
 	}
