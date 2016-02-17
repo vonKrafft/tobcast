@@ -1,8 +1,9 @@
-package example.ubtobcast;
+package example.bbtobcast;
 
 import easysim.Simulator;
 import easysim.TimeDiagram;
 import easysim.config.Configuration;
+import easysim.core.Message;
 import easysim.core.Node;
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author Vivien Quema
  */
-public class Broadcast extends Node<BroadcastMessage> {
+public class Broadcast extends Node<Message> {
 
     // ------------------------------------------------------------------------
     // Global configuration fields
@@ -20,9 +21,15 @@ public class Broadcast extends Node<BroadcastMessage> {
     // ------------------------------------------------------------------------
     // Fields
     // ------------------------------------------------------------------------
-    private Integer currentId = 0;
-    private Integer currentSequenceId = 0;
+    
+    //Sequencer
+    private Integer nextSequenceId = 0;
+    
+    //All
+    private Integer nextRelId = 0;
+    private Integer seqNbToDeliver = 0;
     ArrayList<BroadcastMessage> receivedMessages = new ArrayList();
+    ArrayList<SequenceMessage> receivedSeqMessages = new ArrayList();
     ArrayList<BroadcastMessage> deliveredMessages = new ArrayList();
     // ------------------------------------------------------------------------
     // Fields for statistics
@@ -36,29 +43,43 @@ public class Broadcast extends Node<BroadcastMessage> {
     @Override
     public void cycleHandler() {
         if (Math.random() < 0.35) {
-            BroadcastMessage toSend = new BroadcastMessage();
-            send(toSend , neighbors[0]);
+            send(new BroadcastMessage(this.nextRelId++), neighbors);
         }
         // Handle incoming messages
-        BroadcastMessage m;
+        Message m;
         while ((m = receive()) != null) {
             nbReceivedMessages++;
-            // Node 0 is the sequencer
-            if (id == 0 && m.getSeqNb() == -1) {
-                m.setSeqNb(currentSequenceId++);
-                m.hops++;
-                send(m, neighbors);
-            } else {
-                receivedMessages.add(m);
+            switch(m.getType()){
+                case Message.TYPE.DATA:
+                    if (this.id == 0){
+                        send(new SequenceMessage(m.sendingNode, m.getRelId(), this.nextSequenceId++), neighbors);
+                    }
+                    receivedMessages.add((BroadcastMessage)m);
+                    break;
+                case Message.TYPE.BBSEQUENCE:
+                    receivedSeqMessages.add((SequenceMessage)m);
+                    break;
+                default:
+                    System.err.println("NODE "+ id + ": INCONSISTENT MEESAGE TYPE:" + m.getType()); 
             }
         }
 
         if (deliveredMessages.size() < receivedMessages.size()) {
             int maxMessagesToDeliver = Configuration.getInt("protocol.ubtobcast.maxMessagesToDeliver");
             int nbDeliveredMessages = 0;
+            receivedSeqMessages.sort(
+                    (SequenceMessage m1, SequenceMessage m2)
+                    -> Integer.compare(m1.getToAssociateSeqNb(), m2.getToAssociateSeqNb()));
             receivedMessages.sort(
                     (BroadcastMessage m1, BroadcastMessage m2)
                     -> Integer.compare(m1.getSeqNb(), m2.getSeqNb()));
+            for (BroadcastMessage bm : receivedMessages){
+                if (bm.getSeqNb() == -1){
+                    
+                } else {
+                    break;
+                }
+            }
             while ((maxMessagesToDeliver == -1 || nbDeliveredMessages < maxMessagesToDeliver)
                     && deliveredMessages.size() < receivedMessages.size()
                     && currentId.equals(receivedMessages.get(deliveredMessages.size()).getSeqNb())) {
