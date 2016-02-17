@@ -228,6 +228,9 @@ public class TimeDiagram extends JApplet {
         int[] arrayDef;
         switch (m.getType()) {
             case Message.TYPE.ACK:
+                arrayDef = new int[]{m.sendingNode, receiver.id, m.sendingCycle,
+                    Simulator.getCycle(), m.getRelId(), 5, m.getType(), m.getSeqNb()}; // 5 = Grey (GG guys)
+                break;
             case Message.TYPE.DATA:
                 arrayDef = new int[]{m.sendingNode, receiver.id, m.sendingCycle,
                     Simulator.getCycle(), m.getRelId(), m.color, m.getType(), m.getSeqNb()};
