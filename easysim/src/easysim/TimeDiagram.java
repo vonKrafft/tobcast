@@ -236,7 +236,7 @@ public class TimeDiagram extends JApplet {
                     Simulator.getCycle(), m.getRelId(), m.color, m.getType(), m.getSeqNb()};
                 break;
             case Message.TYPE.BBSEQUENCE:
-                example.bbtobcast.SequenceMessage sm = (example.bbtobcast.SequenceMessage) m;
+                example.mstobcast.SequenceMessage sm = (example.mstobcast.SequenceMessage) m;
                 arrayDef = new int[]{sm.sendingNode, receiver.id, sm.sendingCycle,
                     Simulator.getCycle(), sm.getRelId(), 5, sm.getType(), sm.getToFindNodeFrom(),
                     sm.getToFindRelId(), sm.getToAssociateSeqNb()}; // 5 = Grey (GG guys)
