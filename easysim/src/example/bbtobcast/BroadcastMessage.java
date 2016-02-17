@@ -14,6 +14,7 @@ public class BroadcastMessage extends Message {
     }
     public BroadcastMessage(int relId){
         this.relId = relId;
+        this.seqNb = -1;
     }
     public BroadcastMessage(int relId, int seqNb){
         this.relId = relId;
