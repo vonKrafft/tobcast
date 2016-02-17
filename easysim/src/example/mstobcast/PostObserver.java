@@ -1,6 +1,5 @@
-package example.bbtobcast;
+package example.mstobcast;
 
-import example.mstobcast.Broadcast;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;

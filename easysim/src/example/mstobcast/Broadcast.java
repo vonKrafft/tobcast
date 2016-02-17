@@ -1,7 +1,5 @@
-package example.bbtobcast;
+package example.mstobcast;
 
-import example.mstobcast.SequenceMessage;
-import example.mstobcast.BroadcastMessage;
 import easysim.Simulator;
 import easysim.TimeDiagram;
 import easysim.config.Configuration;

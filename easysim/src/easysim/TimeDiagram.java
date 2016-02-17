@@ -111,7 +111,7 @@ public class TimeDiagram extends JApplet {
                 case Message.TYPE.ACK:
                 case Message.TYPE.UNDEFINED:
                 default:
-                    g2.drawString(messageTypeToString(arrowDef[6]) + "(" + arrowDef[0] + "," + arrowDef[4] + ",ND)", x1 - 40, y1 - 5);
+                    g2.drawString(messageTypeToString(arrowDef[6]) + "(" + arrowDef[0] + "," + arrowDef[4] + ",-)", x1 - 40, y1 - 5);
             }
             g2.setColor(colors[arrowDef[5]]);
             if (arrowDef[0] == arrowDef[1]) {
@@ -230,7 +230,7 @@ public class TimeDiagram extends JApplet {
                     Simulator.getCycle(), m.getRelId(), m.color, m.getType(), m.getSeqNb()};
                 break;
             case Message.TYPE.BBSEQUENCE:
-                example.bbtobcast.SequenceMessage sm = (example.bbtobcast.SequenceMessage) m;
+                example.mstobcast.SequenceMessage sm = (example.mstobcast.SequenceMessage) m;
                 arrayDef = new int[]{sm.sendingNode, receiver.id, sm.sendingCycle,
                     Simulator.getCycle(), sm.getRelId(), 5, sm.getType(), sm.getToFindNodeFrom(),
                     sm.getToFindRelId(), sm.getToAssociateSeqNb()}; // 5 = Grey (GG guys)
