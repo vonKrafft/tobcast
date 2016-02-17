@@ -106,7 +106,7 @@ public class TimeDiagram extends JApplet {
                     g2.drawString(messageTypeToString(arrowDef[6]) + "(" + arrowDef[7] + "," + arrowDef[8] + "," + arrowDef[9] + ")", x1 - 40, y1 - 5);
                     break;
                 case Message.TYPE.DATA:
-                    g2.drawString(messageTypeToString(arrowDef[6]) + "(" + arrowDef[0] + "," + arrowDef[4] + "," + (arrowDef[7] == -1 ? "ND" : arrowDef[7]) + ")", x1 - 40, y1 - 5);
+                    g2.drawString(messageTypeToString(arrowDef[6]) + "(" + arrowDef[0] + "," + arrowDef[4] + "," + (arrowDef[7] == -1 ? "-" : arrowDef[7]) + ")", x1 - 40, y1 - 5);
                     break;
                 case Message.TYPE.ACK:
                 case Message.TYPE.UNDEFINED:
@@ -232,8 +232,8 @@ public class TimeDiagram extends JApplet {
             case Message.TYPE.BBSEQUENCE:
                 example.bbtobcast.SequenceMessage sm = (example.bbtobcast.SequenceMessage) m;
                 arrayDef = new int[]{sm.sendingNode, receiver.id, sm.sendingCycle,
-                    Simulator.getCycle(), sm.getRelId(), 3, sm.getType(), sm.getToFindNodeFrom(),
-                    sm.getToFindRelId(), sm.getToAssociateSeqNb()}; // 3 = Grey (GG guys)
+                    Simulator.getCycle(), sm.getRelId(), 5, sm.getType(), sm.getToFindNodeFrom(),
+                    sm.getToFindRelId(), sm.getToAssociateSeqNb()}; // 5 = Grey (GG guys)
                 break;
             case Message.TYPE.UNDEFINED:
             case Message.TYPE.ACK:
