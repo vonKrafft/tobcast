@@ -16,18 +16,19 @@ public class Broadcast extends Node<BroadcastMessage> {
     // ------------------------------------------------------------------------
     // Global configuration fields
     // ------------------------------------------------------------------------
+    public final int ID_SEQUENCER = 0;
     // ------------------------------------------------------------------------
     // Fields
     // ------------------------------------------------------------------------
+    private int                 seqNb       = 0;
+    private boolean             isWaiting   = false;
+    private LinkedList<Integer> waitingLine = new LinkedList<>(); 
+
     // ------------------------------------------------------------------------
     // Fields for statistics
     // ------------------------------------------------------------------------
-    int nbReceivedMessages = 0;
-    Integer seq = 0;
-    Boolean isWaiting = false;
-    ArrayList<String> receivedMessages = new ArrayList<>();  
-    LinkedList<Integer> waitingLine = new LinkedList<>(); 
-
+    public int                 nbReceivedMessages = 0;
+    public ArrayList<Integer>  receivedMessages   = new ArrayList<>();  
 
 
     public Broadcast(String prefix) {
@@ -36,52 +37,53 @@ public class Broadcast extends Node<BroadcastMessage> {
 
     public void cycleHandler() {
         // Decide if you send a request 
-        if ( Math.random() < 0.25 ) return;
+        if ( Math.random() < 0.75 ) return;
         
-        // Send a request if necessary
-        if ( ! this.isWaiting && id != 0 ) {
-            send(new BroadcastMessage(this.seq++, BroadcastMessage.TYPE_REQ, id), neighbors[0]);
+        // If you are not waiting for a ACK message and you are not the sequencer
+        if ( ! this.isWaiting && id != this.ID_SEQUENCER ) {
+            // Send a REQ message to the sequencer
+            send(new BroadcastMessage(BroadcastMessage.TYPE.REQ, -1, id), neighbors[this.ID_SEQUENCER]);
+            // Wait for the ACK message
+            this.isWaiting = true;
         }
         
-        // Pick the next node in the waiting line
-        if ( ! this.waitingLine.isEmpty() ) {
-            Integer dest = this.waitingLine.pop();
-            send(new BroadcastMessage(this.seq++, BroadcastMessage.TYPE_ACK, id), neighbors[dest]);
+        // If you are the sequencer and the waitinf line is not empty
+        if ( id == this.ID_SEQUENCER && ! this.waitingLine.isEmpty() ) {
+            // Pick the next node in the waiting line
+            Integer idDest = this.waitingLine.pop();
+            // Increment the sequence number
+            this.seqNb++;
+            // Send a ACK message to the initial sender
+            send(new BroadcastMessage(BroadcastMessage.TYPE.ACK, this.seqNb), neighbors[idDest]);
         }
 
         // Handle incoming messages
         BroadcastMessage m;
         while ((m = receive()) != null) {
-            // If this is a request
-            if ( m.isType(BroadcastMessage.TYPE_REQ) && id == 0 ) {
+            // If this is a REQ message and you are the sequencer
+            if ( m.getType() == BroadcastMessage.TYPE.REQ && id == this.ID_SEQUENCER ) {
                 // Add it to the waiting line
-                this.waitingLine.add(m.id_src);
+                this.waitingLine.add(m.getIdSrc());
             }
-            // If this is a ack
-            if ( m.isType(BroadcastMessage.TYPE_ACK) && id != 0 ) {
+            // If this is a ACK message and you are not the sequencer
+            if ( m.getType() == BroadcastMessage.TYPE.ACK && id != this.ID_SEQUENCER ) {
                 // Send the broadcast
-                send(new BroadcastMessage(this.seq++, BroadcastMessage.TYPE_MSG, id), neighbors[0]);
+                send(new BroadcastMessage(BroadcastMessage.TYPE.DATA, m.getSeqNb()), neighbors);
             }
-            // If this is a message
-            if ( m.isType(BroadcastMessage.TYPE_MSG) ) {
+            // If this is a DATA message
+            if ( m.getType() == BroadcastMessage.TYPE.DATA ) {
                 nbReceivedMessages++;
-                // Save it
-                this.receivedMessages.add(m.seq);
-                // Broadcast it
-                if ( id == 0 && ! m.broadcasted ) {
-                    m.broadcasted = true;
-                    send(m, neighbors);
-                }
+                this.receivedMessages.add(m.getSeqNb());
             }
         }
         
         // Print the trace
         if ( Simulator.getCycle() == Configuration.getInt("simulation.cycles")-1 ) {
             String receivedMessage = "";
-            for(String msg: this.receivedMessages) receivedMessage += " "+msg;
+            for(Integer msg: this.receivedMessages) receivedMessage += " "+msg;
             System.out.println("[Node "+id+"]");
             System.out.println("  Number received messages = "+this.nbReceivedMessages);
-            System.out.println("  Received messages = "+receivedMessages);
+            System.out.println("  Received messages = "+receivedMessage);
         }
     }
 

@@ -1,4 +1,4 @@
-package example.ubtobcast;
+package example.bbtobcast;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

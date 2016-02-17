@@ -194,25 +194,22 @@ public abstract class Node<T extends Message> {
                 if (message.sendingCycle + message.latency <= Simulator.getCycle()) {
                     iter.remove();
                     if ( !message.getIsEmpty() ) {
-                        TimeDiagram.addArrow(message.sendingNode, id, message.sendingCycle,          
-                                Simulator.getCycle(), message.id, message.color);
+                        TimeDiagram.addArrow(message, this);
 
-                        TimeDiagram.addCircle(message.sendingNode, id, message.sendingCycle,
-                                Simulator.getCycle(), message.id, 1);
+                        TimeDiagram.addCircle(message, this);
 
-                        message.setAckedBy(id);
+                        /*message.setAckedBy(id);
 
                         boolean[] ackedBy = message.getAckedBy();
                         if (ackedByAll(ackedBy)) {
                             TimeDiagram.addAck(message.sendingNode, id, message.sendingCycle,
-                                    Simulator.getCycle(), message.id, message.color);
+                                    Simulator.getCycle(), message.id, message.color, seqNb);
                         }
-
+                        */
                         nbReceivedMessagesInCurrentRound++;        
                     }
                     else {
-                        TimeDiagram.addCircle(message.sendingNode, id, message.sendingCycle,
-                                Simulator.getCycle(), message.id, message.color);
+                        TimeDiagram.addCircle(message, this);
 
                     }
                     return message;
