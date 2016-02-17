@@ -119,6 +119,10 @@ public class Broadcast extends Node<Message> {
     private void printReport() {
         String idList = "";
         idList = this.deliveredMessages.stream().map((m) -> m.getSeqNb() + " ").reduce(idList, String::concat);
-        System.out.println("Node " + this.id + ":\n\tNumber of messages received:" + this.receivedMessages.size() + "\n\tNumber of messages delivered:" + this.deliveredMessages.size() + "\n\tOrdered messages: " + idList);
+        System.out.println("Node " + this.id
+                + "\n\tNumber of any-type messages received:" + nbReceivedMessages
+                + "\n\tNumber of data messages received:" + (this.receivedMessages.size() + messagesToDeliver.size())
+                + "\n\tNumber of messages delivered:" + this.deliveredMessages.size()
+                + "\n\tOrdered messages: " + idList);
     }
 }
